@@ -1,0 +1,16 @@
+{
+  "name": "cocos-bakery",
+  "version": "1.0.0",
+  "description": "Coco's Artisan Bakery website with Node.js and Stripe checkout",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "stripe": "^12.0.0"
+  },
+  "author": "Chris Ferguson",
+  "license": "ISC"
+}

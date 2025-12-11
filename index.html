@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coco's Artisan Bakery</title>
+  <link rel="stylesheet" href="cab.css" />
+  <style>
+    /* CART STYLES */
+    .cart {
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      width: 280px;
+      background-color: #fde9da;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+
+    .cart h2 {
+      margin-top: 0;
+      color: #6a4635;
+      font-size: 22px;
+    }
+
+    .cart ul {
+      list-style: none;
+      padding-left: 0;
+      max-height: 250px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+
+    .cart li {
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    #checkout-button {
+      background-color: #a05e2b;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    .add-to-cart {
+      margin-left: 10px;
+      background-color: #a05e2b;
+      color: #fff;
+      border: none;
+      padding: 5px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .add-to-cart:hover,
+    #checkout-button:hover {
+      background-color: #6a4635;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO LOGO -->
+  <header class="hero-logo">
+    <img src="coco-logo.jpg" alt="CoCo's Artisan Bakery Logo">
+  </header>
+
+  <!-- SPECIALTIES -->
+  <section class="specialties">
+    <h2>Our Specialty Flavors</h2>
+    <p>Small-batch sourdough crafted with love, patience, and tradition.</p>
+
+    <div class="special-grid">
+      <div class="special-card">
+        <h3>Long Ferment Sourdough</h3>
+        <p>48-hour ferment for deep flavor and incredible texture.</p>
+      </div>
+
+      <div class="special-card">
+        <h3>Locally Sourced Ingredients</h3>
+        <p>Fresh herbs, spices, and mix-ins from trusted suppliers.</p>
+      </div>
+
+      <div class="special-card">
+        <h3>Weekly Limited Batches</h3>
+        <p>Everything baked in small quantities for peak freshness.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu" class="menu">
+    <h2>Weekly Bread Menu</h2>
+
+    <div class="menu-category">
+      <h3 class="category-title">$8 Breads</h3>
+      <ul>
+        <li data-price="8">Italian Herb & Cheese <button class="add-to-cart">Add to Cart</button></li>
+        <li data-price="8">Plain Sourdough <button class="add-to-cart">Add to Cart</button></li>
+      </ul>
+    </div>
+
+    <div class="menu-category">
+      <h3 class="category-title">$10 Breads</h3>
+      <ul>
+        <li data-price="10">French Onion <button class="add-to-cart">Add to Cart</button></li>
+        <li data-price="10">Lemon Poppy Seed <button class="add-to-cart">Add to Cart</button></li>
+        <li data-price="10">Tomato Basil <button class="add-to-cart">Add to Cart</button></li>
+        <li data-price="10">Espresso Hazelnut <button class="add-to-cart">Add to Cart</button></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CART -->
+  <section id="cart" class="cart">
+    <h2>Your Cart</h2>
+    <ul id="cart-items"></ul>
+    <p>Total: $<span id="cart-total">0</span></p>
+    <button id="checkout-button">Checkout</button>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2025 Coco's Artisan Bakery • Freshly baked every week</p>
+  </footer>
+
+  <!-- STRIPE + CART SCRIPT -->
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    const cart = [];
+    const cartItemsEl = document.getElementById('cart-items');
+    const cartTotalEl = document.getElementById('cart-total');
+    const addButtons = document.querySelectorAll('.add-to-cart');
+    const checkoutButton = document.getElementById('checkout-button');
+
+    // Add item to cart
+    addButtons.forEach(btn => {
+      btn.addEventListener('click', e => {
+        const li = e.target.parentElement;
+        const name = li.textContent.replace('Add to Cart','').trim();
+        const price = parseFloat(li.dataset.price);
+        const itemIndex = cart.findIndex(i => i.name === name);
+        if(itemIndex > -1){
+          cart[itemIndex].qty++;
+        } else {
+          cart.push({name, price, qty: 1});
+        }
+        renderCart();
+      });
+    });
+
+    // Render cart
+    function renderCart() {
+      cartItemsEl.innerHTML = '';
+      let total = 0;
+
+      cart.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} x${item.qty} - $${(item.price*item.qty).toFixed(2)}`;
+
+        // Remove button
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'X';
+        removeBtn.style.marginLeft = '8px';
+        removeBtn.style.backgroundColor = '#a05e2b';
+        removeBtn.style.color = '#fff';
+        removeBtn.style.border = 'none';
+        removeBtn.style.padding = '2px 6px';
+        removeBtn.style.borderRadius = '4px';
+        removeBtn.style.cursor = 'pointer';
+
+        removeBtn.addEventListener('click', () => {
+          if(item.qty > 1){
+            item.qty--;
+          } else {
+            cart.splice(index, 1);
+          }
+          renderCart();
+        });
+
+        li.appendChild(removeBtn);
+        cartItemsEl.appendChild(li);
+        total += item.price * item.qty;
+      });
+
+      cartTotalEl.textContent = total.toFixed(2);
+    }
+
+    // Checkout with Stripe
+checkoutButton.addEventListener('click', async () => {
+  if(cart.length === 0){
+    alert("Your cart is empty!");
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:3000/create-checkout-session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ items: cart })
+    });
+
+    const session = await response.json();
+
+    if(session.error){
+      alert("Error creating checkout session: " + session.error);
+      return;
+    }
+
+    // Initialize Stripe with your publishable key
+    const stripe = Stripe("pk_live_51SdGdCCSpLhqejT3x6UlEdr66x8nTVA7GkIPMXKASv1fJTJ3Y28pbQFdtCsBAteFLBiAAXUxte4gmkg4gpIC9DJU00A2ylzR7x");
+
+    // Redirect to Checkout
+    const { error } = await stripe.redirectToCheckout({
+      sessionId: session.id
+    });
+
+    if(error) alert(error.message);
+
+  } catch (err) {
+    console.error(err);
+    alert("Error creating checkout session");
+  }
+});
+
+  </script>
+</body>
+</html>
