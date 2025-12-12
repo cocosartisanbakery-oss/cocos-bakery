@@ -100,16 +100,15 @@ footer {
 /* Mobile adjustments for the cart */
 @media (max-width: 768px) {
   .cart {
-    position: fixed;       /* Ensure it stays at the bottom */
-    bottom: 10px;          
-    right: 50%;            /* Center horizontally */
-    transform: translateX(50%); /* Adjust center properly */
-    width: 90%;           
-    max-height: 200px;    
-    overflow-y: auto;     
+    position: fixed;          /* keep it fixed */
+    bottom: 10px;             /* distance from bottom */
+    right: 10px;              /* distance from right edge */
+    width: calc(100% - 20px); /* full width minus margins */
+    max-height: 250px;        /* allow scrolling inside cart */
+    overflow-y: auto;         /* scroll if content overflows */
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    z-index: 1000;         /* Stay above other content */
   }
 }
+
