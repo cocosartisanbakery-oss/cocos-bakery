@@ -100,17 +100,14 @@ footer {
 /* Mobile adjustments for the cart */
 @media (max-width: 768px) {
   .cart {
-    position: fixed;          /* Fix it to the viewport */
-    bottom: 0;                /* Stick to the bottom */
-    left: 0;                  /* Align to left edge */
-    width: 100%;              /* Full width of the screen */
-    max-height: 250px;        /* Scroll if content overflows */
-    overflow-y: auto;         /* Enable vertical scrolling */
-    border-radius: 0;         /* Optional: no rounded corners on bottom */
-    padding: 15px;
-    box-shadow: 0 -2px 8px rgba(0,0,0,0.2); /* Shadow above the cart */
-    background-color: #fde9da; /* Keep your theme color */
-    z-index: 1000;            /* Stay on top of page content */
+    position: static;       /* Normal page flow */
+    width: 95%;             /* Full-ish width */
+    margin: 20px auto 0;    /* Top margin and center horizontally */
+    max-height: none;       /* Let it expand naturally */
+    overflow: visible;      /* No internal scroll */
+    border-radius: 10px;    /* Rounded corners */
+    padding: 10px;          
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2); 
   }
 }
 
