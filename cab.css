@@ -23,6 +23,53 @@ body {
     height: auto;
 }
 
+/* NEW STORY SECTION */
+.our-story {
+    padding: 60px 20px;
+    background-color: #f9f6f1; /* Slightly lighter than body for contrast */
+    color: #3b2e2a;
+}
+
+.story-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.story-content {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.story-text {
+    flex: 2;
+}
+
+.story-text h2 {
+    color: #6a4635;
+    font-size: 32px;
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+
+.story-text p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.story-image {
+    flex: 1;
+    min-width: 280px;
+}
+
+.story-image img {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border: 5px solid #fde9da; /* Matching your special-card color */
+}
+
 /* SPECIALTIES SECTION */
 .specialties {
     padding: 60px 20px;
@@ -97,18 +144,30 @@ footer {
     margin-top: 40px;
 }
 
-/* Mobile adjustments for the cart */
+/* MOBILE ADJUSTMENTS */
 @media (max-width: 768px) {
   .cart {
-    position: static;       /* Normal page flow */
-    width: 95%;             /* Full-ish width */
-    margin: 20px auto 0;    /* Top margin and center horizontally */
-    max-height: none;       /* Let it expand naturally */
-    overflow: visible;      /* No internal scroll */
-    border-radius: 10px;    /* Rounded corners */
+    position: static;       
+    width: 95%;             
+    margin: 20px auto 0;    
+    max-height: none;       
+    overflow: visible;      
+    border-radius: 10px;    
     padding: 10px;          
     box-shadow: 0 2px 8px rgba(0,0,0,0.2); 
   }
+
+  .story-content {
+    flex-direction: column !important; /* Stacks image on top of text for mobile */
+    text-align: center;
+    gap: 20px;
+  }
+
+  .story-image {
+    min-width: 100%;
+  }
+
+  .story-text h2 {
+    font-size: 28px;
+  }
 }
-
-
