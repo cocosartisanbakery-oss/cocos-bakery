@@ -39,7 +39,7 @@ app.post('/create-checkout-session', async (req, res) => {
     }));
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
+      payment_method_types: ['card','cashapp'],
       shipping_address_collection: {
         allowed_countries: ['US'], // Add more if needed
       },
